@@ -26,12 +26,12 @@ const lettersData = [
     img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4vmcNG4We2YevTnQV3lWlk8C9TrW5ZJAKobZv-7B3NA&s=10',
     href: '#',
   },
-  {
-    id: 5,
-    title: 'State Championship Sanction Letter (Assam / Maharashtra)',
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEn6gFz71hfngbrscXdimUtlJyZKEelHoeqQs38Tjuzw&s=10',
-    href: '#',
-  }
+//   {
+//     id: 5,
+//     title: 'State Championship Sanction Letter (Assam / Maharashtra)',
+//     img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEn6gFz71hfngbrscXdimUtlJyZKEelHoeqQs38Tjuzw&s=10',
+//     href: '#',
+//   }
 ];
 
 export default function GovernmentLetters() {
@@ -48,21 +48,23 @@ export default function GovernmentLetters() {
           <div className="w-24 h-1.5 bg-[#E62227] rounded-full"></div>
         </div>
 
-        {/* ================= FOCUS GRID ================= */}
-        {/* The 'group/list' class controls the dimming effect for the whole row */}
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 lg:gap-8 group/list">
+        {/* ================= ADAPTIVE FLEX GRID ================= */}
+        {/* Changed from 'grid' to 'flex flex-wrap justify-center' */}
+        <div className="flex flex-wrap justify-center gap-6 lg:gap-8 group/list">
           
           {lettersData.map((letter) => (
             <Link 
               href={letter.href} 
               key={letter.id}
-              title={letter.title} // Adds a native browser tooltip on hover
+              title={letter.title} 
               className="
-                relative block w-full aspect-[1/1.4] bg-white rounded-sm border border-gray-200 
+                relative block 
+                /* Fixed responsive widths ensure they stay uniform and wrap cleanly */
+                w-[calc(50%-12px)] sm:w-[180px] md:w-[200px] lg:w-[220px] xl:w-[240px] shrink-0
+                aspect-[1/1.4] bg-white rounded-sm border border-gray-200 
                 transition-all duration-400 ease-in-out
-                /* When the user hovers over ANY card in the list, dim all cards to 50% */
+                /* Hover effects */
                 group-hover/list:opacity-50 
-                /* Force the SPECIFIC card being hovered back to 100% opacity, lift it, and add a shadow */
                 hover:!opacity-100 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] 
                 z-10 hover:z-20
               "

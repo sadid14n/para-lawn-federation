@@ -26,7 +26,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full shadow-md bg-white">
+    <header className="sticky top-0 z-50 w-full shadow-md bg-white relative">
       {/* --- TOP HEADER (Hides on scroll & mobile) --- */}
       <div 
         className={`hidden md:flex items-center justify-between text-xs font-semibold text-white transition-all duration-300 overflow-hidden ${
@@ -56,16 +56,25 @@ export default function Header() {
       </div>
 
       {/* --- MAIN NAVBAR --- */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-3 h-20 lg:h-24">
+      <div className="flex items-center justify-between px-4 md:px-8 py-3 h-16 sm:h-20 lg:h-24">
         {/* Logo Section */}
-        <Link href="/" className="flex items-center space-x-3 shrink-0">
-          {/* Replace src with your actual logo paths */}
-          <img src="/logo-1.png" alt="PLBFI Logo" className="h-12 w-12 md:h-16 md:w-16 bg-gray-200 rounded-full object-cover" />
+        <Link href="/" className="flex items-center space-x-3 sm:space-x-4 shrink-0">
+          {/* Responsive Image Size */}
+          <img src="/logo-1.png" alt="PLBFI Logo" className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 bg-gray-200 rounded-full object-cover shrink-0" />
+          
           <div className="flex flex-col justify-center">
-             <span className="text-[#E62227] font-black text-[15px] md:text-lg lg:text-xl leading-tight tracking-wide uppercase">
+             {/* Mobile View: Short Name (PLBFI) */}
+             <span className="md:hidden text-[#E62227] font-black text-xl sm:text-2xl leading-tight tracking-wider uppercase">
+               PLBFI
+             </span>
+             
+             {/* Desktop/Tablet View: Full Name */}
+             <span className="hidden md:block text-[#E62227] font-black text-lg lg:text-xl leading-tight tracking-wide uppercase">
                Para Lawn Bowls Federation of India
              </span>
-             <span className="text-[10px] md:text-xs text-[#0B1242] font-bold uppercase tracking-wider mt-0.5">
+
+             {/* Subtitle: Hides on ultra-small mobile screens to save space */}
+             <span className="hidden sm:block text-[9px] md:text-xs text-[#0B1242] font-bold uppercase tracking-wider mt-0.5">
                Recognized by: International Bowls for the Disabled (IBD)
              </span>
           </div>
@@ -87,28 +96,31 @@ export default function Header() {
           </button>
         </nav>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Toggle Button */}
         <button 
-          className="xl:hidden p-2 text-[#0B1242] hover:text-[#E62227] transition-colors"
+          className="xl:hidden p-2 text-[#0B1242] hover:text-[#E62227] transition-colors shrink-0"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle Menu"
         >
-          {mobileMenuOpen ? <FiX size={32} /> : <FiMenu size={32} />}
+          {mobileMenuOpen ? <FiX size={28} className="sm:w-8 sm:h-8" /> : <FiMenu size={28} className="sm:w-8 sm:h-8" />}
         </button>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
-      {mobileMenuOpen && (
-        <div className="xl:hidden bg-white border-t-2 border-[#E62227] p-6 flex flex-col space-y-4 font-bold text-[#0B1242] shadow-2xl uppercase tracking-wider">
-          <Link href="/" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">Home</Link>
-          <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">About PLBFI</Link>
-          <Link href="/classification" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">Classification</Link>
-          <Link href="/events" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">Events & Calendar</Link>
-          <Link href="/officials" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">Coaches & Referees</Link>
-          <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">Results & Rankings</Link>
-          <Link href="/ibd" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">IBD Affiliation</Link>
-          <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#E62227]">Contact Us</Link>
-        </div>
-      )}
+      {/* Mobile Navigation Dropdown (Absolute Overlay) */}
+      <div 
+        className={`xl:hidden absolute top-full left-0 w-full bg-white border-t-2 border-[#E62227] flex flex-col font-bold text-[#0B1242] shadow-2xl uppercase tracking-wider transition-all duration-300 origin-top overflow-hidden ${
+          mobileMenuOpen ? 'max-h-[600px] scale-y-100 opacity-100' : 'max-h-0 scale-y-0 opacity-0'
+        }`}
+      >
+        <Link href="/" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">Home</Link>
+        <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">About PLBFI</Link>
+        <Link href="/classification" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">Classification</Link>
+        <Link href="/events" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">Events & Calendar</Link>
+        <Link href="/officials" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">Coaches & Referees</Link>
+        <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">Results & Rankings</Link>
+        <Link href="/ibd" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#E62227]">IBD Affiliation</Link>
+        <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 hover:bg-gray-50 hover:text-[#E62227]">Contact Us</Link>
+      </div>
     </header>
   );
 }
