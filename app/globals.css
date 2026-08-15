@@ -19,8 +19,35 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* Ensures the footer stays at the bottom even on short pages */
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Add this at the bottom of src/app/globals.css */
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+  /* Add hardware acceleration for smoother scrolling */
+  will-change: transform; 
+}
+
+/* Pause the animation when the user hovers over it to read */
+.animate-ticker:hover {
+  animation-play-state: paused;
 }
