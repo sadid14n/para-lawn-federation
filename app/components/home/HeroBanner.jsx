@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { FiArrowRight } from 'react-icons/fi';
 
 const bannerImages = [
-  "https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=2000&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2000&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=2000&auto=format&fit=crop",
+
 ];
 
 export default function HeroBanner() {
