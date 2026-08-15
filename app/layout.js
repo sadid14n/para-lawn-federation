@@ -11,8 +11,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "Grappling Federation of India",
-  description: "National Governing Body for Grappling Sports in India",
+  title: "Para Lawn Bowls Federation of India",
+  description: "National Governing Body for Para Lawn Bowls in India",
 };
 
 export default function RootLayout({ children }) {
