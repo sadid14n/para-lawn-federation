@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "Para Lawn Bowls Federation of India",
+  title: "Para Indian Lawn Bowls Federation",
   description: "National Governing Body for Para Lawn Bowls in India",
 };
 
