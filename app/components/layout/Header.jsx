@@ -67,7 +67,7 @@ export default function Header() {
           <div className="flex flex-col justify-center">
              {/* Mobile View: Short Name (PLBFI) */}
              <span className="md:hidden text-[#1E2265] font-black text-xl sm:text-2xl leading-tight tracking-wider uppercase">
-               PLBFI
+               PILBF
              </span>
              
              {/* Desktop/Tablet View: Full Name - Using Deep Navy to match logo text */}
