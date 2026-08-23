@@ -35,10 +35,9 @@ export async function sendPasswordResetEmail(email) {
       expiresIn: '15m',
     });
 
-    // Ensure you add NEXT_PUBLIC_APP_URL=http://localhost:3000 (or your live domain) to your .env file
-    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL 
-      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+
+    // const baseUrl = 'http://localhost:3000';
+    const baseUrl = 'https://para-lawn-federation.vercel.app';
 
     const resetLink = `${baseUrl}/reset-password?token=${resetToken}`;
 
