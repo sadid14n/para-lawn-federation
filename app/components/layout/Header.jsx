@@ -91,8 +91,15 @@ export default function Header({ session }) {
 
           <div className="flex items-center space-x-4 ml-2 border-l-2 border-gray-200 pl-6">
           {session ? (
-            <Link href="/dashboard" className="flex items-center bg-[#1E2265] text-white px-5 py-2.5 rounded-full hover:bg-[#EF7D20] transition-colors shadow-md">
-              <FiUser className="mr-2" size={16} /> Profile
+            <Link 
+              href={(session.role === 'super_admin' || session.role === 'admin') ? '/admin' : '/dashboard'} 
+              className="flex items-center bg-[#1E2265] text-white px-5 py-2.5 rounded-full hover:bg-[#EF7D20] transition-colors shadow-md"
+            >
+              {(session.role === 'super_admin' || session.role === 'admin') ? (
+                <><FiGrid className="mr-2" size={16} /> Admin Panel</>
+              ) : (
+                <><FiUser className="mr-2" size={16} /> Profile</>
+              )}
             </Link>
           ) : (
             <>
@@ -100,11 +107,11 @@ export default function Header({ session }) {
               <Link href="/register" className="bg-[#EF7D20] text-white px-5 py-2.5 rounded-full hover:bg-[#d66a15] transition-colors shadow-md font-bold">Register</Link>
             </>
           )}
-        </div>
+          </div>
           
-          <button className="text-[#1E2265] hover:text-[#EF7D20] transition-colors p-2">
+          {/* <button className="text-[#1E2265] hover:text-[#EF7D20] transition-colors p-2">
             <FiGrid size={22} />
-          </button>
+          </button> */}
         </nav>
 
         {/* Mobile Menu Toggle Button */}
@@ -128,10 +135,19 @@ export default function Header({ session }) {
         <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">Results & Rankings</Link>
         <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 hover:bg-gray-50 hover:text-[#EF7D20]">Contact Us</Link>
 
+        {/* === MOBILE AUTH BUTTONS === */}
         <div className="px-6 py-5 border-t border-gray-100 flex flex-col space-y-3 bg-gray-50 mt-auto">
           {session ? (
-            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-center bg-[#1E2265] text-white py-3.5 rounded-xl hover:bg-[#EF7D20] transition-colors shadow-sm">
-              <FiUser className="mr-2" size={18} /> My Dashboard
+            <Link 
+              href={(session.role === 'super_admin' || session.role === 'admin') ? '/admin' : '/dashboard'} 
+              onClick={() => setMobileMenuOpen(false)} 
+              className="flex items-center justify-center bg-[#1E2265] text-white py-3.5 rounded-xl hover:bg-[#EF7D20] transition-colors shadow-sm"
+            >
+              {(session.role === 'super_admin' || session.role === 'admin') ? (
+                <><FiGrid className="mr-2" size={18} /> Admin Panel</>
+              ) : (
+                <><FiUser className="mr-2" size={18} /> My Dashboard</>
+              )}
             </Link>
           ) : (
             <>

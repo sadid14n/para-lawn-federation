@@ -84,7 +84,7 @@ export default function Register() {
           <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at center, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
           <div className="relative z-10">
             <Link href="/" className="inline-block mb-12">
-              <img src="/logo-1.png" alt="PILBF Logo" className="h-16 w-16 bg-white rounded-full p-1 shadow-md" />
+              <img src="/logo.svg" alt="PILBF Logo" className="h-16 w-16 bg-white rounded-full p-1 shadow-md" />
             </Link>
             <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">Join The <br /><span className="text-[#EF7D20]">Movement.</span></h1>
             <p className="text-blue-100/80 text-base md:text-lg mb-8 leading-relaxed">Create an account to register for tournaments, manage classifications, and become an official part of the Para Indian Lawn Bowls Federation.</p>

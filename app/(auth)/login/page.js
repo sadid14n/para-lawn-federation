@@ -35,7 +35,12 @@ export default function Login() {
         setErrorMessage(response.error);
       } else if (response?.success) {
         // Redirect to dashboard on successful login
-        router.push('/dashboard');
+        // router.push('/dashboard');
+        if (response.user.role === 'super_admin' || response.user.role === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/dashboard');
+        }
         router.refresh();
       }
     } catch (err) {
@@ -62,7 +67,7 @@ export default function Login() {
           
           <div className="relative z-10">
             <Link href="/" className="inline-block mb-12">
-              <img src="/logo-1.png" alt="PILBF Logo" className="h-16 w-16 bg-white rounded-full p-1 shadow-md" />
+              <img src="/logo.svg" alt="PILBF Logo" className="h-16 w-16 bg-white rounded-full p-1 shadow-md" />
             </Link>
             
             <h1 className="text-4xl lg:text-5xl font-black mb-6 leading-tight">
@@ -93,7 +98,7 @@ export default function Login() {
           {/* Mobile Logo Header */}
           <div className="md:hidden flex flex-col items-center mb-8">
             <Link href="/">
-              <img src="/logo-1.png" alt="PILBF Logo" className="h-16 w-16 bg-white rounded-full p-1 shadow-md border border-gray-100 mb-3" />
+              <img src="/logo.svg" alt="PILBF Logo" className="h-16 w-16 bg-white rounded-full p-1 shadow-md border border-gray-100 mb-3" />
             </Link>
             <span className="text-xs font-bold uppercase tracking-widest text-[#1E2265]">PILBF Portal</span>
           </div>
