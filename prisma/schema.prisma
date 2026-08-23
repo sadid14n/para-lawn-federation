@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Note: No 'url' here! Prisma 7 moved this to the config file.
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  role               String   // 'player', 'coach', or 'association'
+  name               String
+  email              String   @unique
+  passwordHash       String
+  phone              String
+  state              String
+  
+  // Player Specific Fields
+  dob                DateTime?
+  gender             String?
+  impairmentType     String?
+  otherImpairment    String?
+  wheelchairUser     Boolean?
+  
+  // Coach Specific Fields
+  roleType           String?
+  certificationLevel String?
+  
+  // Association Specific Fields
+  orgName            String?
+  orgType            String?
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}

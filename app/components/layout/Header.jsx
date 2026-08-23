@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 // Feather icons for UI
-import { FiMail, FiPhone, FiMenu, FiX, FiChevronDown, FiGrid } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMenu, FiX, FiChevronDown, FiGrid, FiUser } from 'react-icons/fi';
 // FontAwesome 6 for Brands
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 
-export default function Header() {
+export default function Header({ session }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -86,12 +86,21 @@ export default function Header() {
         <nav className="hidden xl:flex items-center space-x-5 lg:space-x-7 text-sm font-extrabold text-[#1E2265] uppercase tracking-wide">
           <Link href="/" className="text-[#EF7D20]">Home</Link>
           <Link href="/about" className="flex items-center hover:text-[#EF7D20] transition-colors">About PLBFI <FiChevronDown size={14} className="ml-1" /></Link>
-          <Link href="/classification" className="flex items-center hover:text-[#EF7D20] transition-colors">Classification <FiChevronDown size={14} className="ml-1" /></Link>
-          <Link href="/events" className="flex items-center hover:text-[#EF7D20] transition-colors">Events <FiChevronDown size={14} className="ml-1" /></Link>
-          <Link href="/officials" className="flex items-center hover:text-[#EF7D20] transition-colors">Coaches & Referees <FiChevronDown size={14} className="ml-1" /></Link>
           <Link href="/results" className="hover:text-[#EF7D20] transition-colors">Results</Link>
-          <Link href="/ibd" className="hover:text-[#EF7D20] transition-colors">IBD</Link>
           <Link href="/contact" className="hover:text-[#EF7D20] transition-colors">Contact</Link>
+
+          <div className="flex items-center space-x-4 ml-2 border-l-2 border-gray-200 pl-6">
+          {session ? (
+            <Link href="/dashboard" className="flex items-center bg-[#1E2265] text-white px-5 py-2.5 rounded-full hover:bg-[#EF7D20] transition-colors shadow-md">
+              <FiUser className="mr-2" size={16} /> Profile
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-[#1E2265] hover:text-[#EF7D20] transition-colors font-bold">Log In</Link>
+              <Link href="/register" className="bg-[#EF7D20] text-white px-5 py-2.5 rounded-full hover:bg-[#d66a15] transition-colors shadow-md font-bold">Register</Link>
+            </>
+          )}
+        </div>
           
           <button className="text-[#1E2265] hover:text-[#EF7D20] transition-colors p-2">
             <FiGrid size={22} />
@@ -116,12 +125,21 @@ export default function Header() {
       >
         <Link href="/" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">Home</Link>
         <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">About PLBFI</Link>
-        <Link href="/classification" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">Classification</Link>
-        <Link href="/events" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">Events & Calendar</Link>
-        <Link href="/officials" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">Coaches & Referees</Link>
         <Link href="/results" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">Results & Rankings</Link>
-        <Link href="/ibd" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 border-b border-gray-100 hover:bg-gray-50 hover:text-[#EF7D20]">IBD Affiliation</Link>
         <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-6 py-4 hover:bg-gray-50 hover:text-[#EF7D20]">Contact Us</Link>
+
+        <div className="px-6 py-5 border-t border-gray-100 flex flex-col space-y-3 bg-gray-50 mt-auto">
+          {session ? (
+            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center justify-center bg-[#1E2265] text-white py-3.5 rounded-xl hover:bg-[#EF7D20] transition-colors shadow-sm">
+              <FiUser className="mr-2" size={18} /> My Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-center py-3.5 border-2 border-[#1E2265] text-[#1E2265] rounded-xl hover:bg-[#1E2265] hover:text-white transition-colors font-bold">Log In</Link>
+              <Link href="/register" onClick={() => setMobileMenuOpen(false)} className="text-center py-3.5 bg-[#EF7D20] text-white rounded-xl hover:bg-[#d66a15] transition-colors shadow-sm font-bold">Register Now</Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
