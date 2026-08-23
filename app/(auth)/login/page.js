@@ -35,7 +35,7 @@ export default function Login() {
         setErrorMessage(response.error);
       } else if (response?.success) {
         // Redirect to dashboard on successful login
-        router.push('/');
+        router.push('/dashboard');
         router.refresh();
       }
     } catch (err) {
