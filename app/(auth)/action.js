@@ -37,7 +37,9 @@ export async function sendPasswordResetEmail(email) {
 
     // 3. Create the reset link
     // Ensure you add NEXT_PUBLIC_APP_URL=http://localhost:3000 (or your live domain) to your .env file
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    // const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL 
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
     const resetLink = `${baseUrl}/reset-password?token=${resetToken}`;
 
     // 4. Send the email
