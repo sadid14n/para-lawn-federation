@@ -5,86 +5,88 @@ import { ContactShadows } from '@react-three/drei';
 import { useRef } from 'react';
 import * as THREE from 'three';
 
-const grassVertex = `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
+function hash(x, y) {
+  const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+  return s - Math.floor(s);
+}
 
-const grassFragment = `
-  varying vec2 vUv;
-  uniform float uTime;
+function useBowlsGreenTexture() {
+  return useMemo(() => {
+    const size = 1024;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
 
-  float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-  }
+    ctx.fillStyle = '#2c6b33';
+    ctx.fillRect(0, 0, size, size);
 
-  float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    float a = hash(i);
-    float b = hash(i + vec2(1.0, 0.0));
-    float c = hash(i + vec2(0.0, 1.0));
-    float d = hash(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-  }
-
-  float fbm(vec2 p) {
-    float v = 0.0;
-    float amp = 0.5;
-    for (int i = 0; i < 4; i++) {
-      v += amp * noise(p);
-      p *= 2.0;
-      amp *= 0.5;
+    const rinkCount = 6;
+    const rinkWidth = size / rinkCount;
+    for (let i = 0; i < rinkCount; i++) {
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.045)';
+      ctx.fillRect(i * rinkWidth, 0, rinkWidth, size);
     }
-    return v;
-  }
 
-  void main() {
-    vec3 base = vec3(0.16, 0.42, 0.20);
-    vec3 dark = vec3(0.10, 0.30, 0.15);
-    vec3 light = vec3(0.28, 0.56, 0.26);
+    ctx.save();
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = 16;
+    for (let r = 50; r < size * 0.75; r += 46) {
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
 
-    vec2 center = vec2(0.5, 0.5);
-    float dist = distance(vUv, center);
+    // Blade-level noise speckle — now deterministic (hash of pixel position),
+    // not Math.random(), so this stays pure and safe inside useMemo/render
+    const imgData = ctx.getImageData(0, 0, size, size);
+    for (let i = 0; i < imgData.data.length; i += 4) {
+      const px = (i / 4) % size;
+      const py = Math.floor(i / 4 / size);
+      const n = (hash(px, py) - 0.5) * 16;
+      imgData.data[i] += n;
+      imgData.data[i + 1] += n;
+      imgData.data[i + 2] += n;
+    }
+    ctx.putImageData(imgData, 0, 0);
 
-    float rings = sin(dist * 60.0) * 0.5 + 0.5;
-    float ringBand = smoothstep(0.4, 0.6, rings);
-    float stripe = step(0.5, mod(floor(vUv.x * 10.0 + vUv.y * 2.0), 2.0));
+    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+    ctx.lineWidth = 3;
+    for (let i = 1; i < rinkCount; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * rinkWidth, 0);
+      ctx.lineTo(i * rinkWidth, size);
+      ctx.stroke();
+    }
 
-    vec3 color = mix(base, dark, stripe * 0.3);
-    color = mix(color, light, ringBand * 0.18);
+    const ditch = size * 0.035;
+    ctx.fillStyle = '#5a4632';
+    ctx.fillRect(0, 0, size, ditch);
+    ctx.fillRect(0, size - ditch, size, ditch);
+    ctx.fillRect(0, 0, ditch, size);
+    ctx.fillRect(size - ditch, 0, ditch, size);
 
-    float blades = fbm(vUv * 220.0) * 0.12;
-    float coarse = fbm(vUv * 30.0 + uTime * 0.02) * 0.05;
-    color += blades + coarse;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 5;
+    ctx.strokeRect(ditch, ditch, size - ditch * 2, size - ditch * 2);
 
-    float sheen = smoothstep(0.0, 1.0, vUv.y) * 0.08;
-    color += sheen;
-
-    color *= smoothstep(0.98, 0.2, dist) * 0.4 + 0.75;
-
-    gl_FragColor = vec4(color, 1.0);
-  }
-`;
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.anisotropy = 8;
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, []);
+}
 
 function GrassGround() {
-  const matRef = useRef();
-  useFrame((state) => {
-    if (matRef.current) matRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-  });
+  const grassTexture = useBowlsGreenTexture();
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.51, 0]} receiveShadow>
       <planeGeometry args={[30, 30]} />
-      <shaderMaterial
-        ref={matRef}
-        vertexShader={grassVertex}
-        fragmentShader={grassFragment}
-        uniforms={{ uTime: { value: 0 } }}
-      />
+      <meshStandardMaterial map={grassTexture} roughness={0.92} metalness={0} />
     </mesh>
   );
 }
