@@ -9,12 +9,14 @@ import GovernmentLetters from "./components/home/GovernmentLetters";
 import WhyUs from "./components/home/WhyUs";
 import MembersAndCTA from "./components/home/MembersAndCTA";
 import LatestNews from "./components/home/LatestNews";
+import Hero from "./components/home/Hero";
 
 export default function Home() {
   return (
     <div className="w-full flex flex-col">
       {/* 1. THE HOOK: Instantly show what the sport is */}
-      <HeroBanner />
+      {/* <HeroBanner /> */}
+      <Hero/>
       <NewsTicker />
 
       {/* 2. THE INTRODUCTION: Short, bold statement of authority */}
