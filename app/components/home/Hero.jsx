@@ -128,8 +128,10 @@ export default function Hero() {
       {/* Hint now floats near the bottom, right where the ball actually lives */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
         <span ref={hintRef} className="text-[10px] tracking-[0.2em] uppercase text-white/80 font-medium mb-1 drop-shadow">
-          Drag the ball to play
-        </span>
+  {/* CSS-only swap: shows "Drag" on desktop, "Touch & drag" on mobile */}
+  <span className="md:hidden">Touch &amp; drag the ball</span>
+  <span className="hidden md:inline">Drag the ball to play</span>
+</span>
         <FiChevronDown className="text-white/70" size={16} />
       </div>
     </div>

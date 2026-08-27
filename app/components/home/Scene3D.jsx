@@ -122,11 +122,10 @@ function LawnBowl({ bounds, onDragChange, meshRefOut }) {
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const dragStart = useRef(null);
   const isDragging = useRef(false);
+  const activePointerId = useRef(null); // track which finger/pointer owns the drag
   const mouseTarget = useRef(new THREE.Vector3(0, 0, 1.5));
 
   const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-
-  // Depth-based scale: small & far near zMin (top of screen), large & near at zMax (bottom)
   const MIN_SCALE = 0.4;
   const MAX_SCALE = 1.25;
 
@@ -154,13 +153,15 @@ function LawnBowl({ bounds, onDragChange, meshRefOut }) {
     if (mesh.position.x === bounds.xMin || mesh.position.x === bounds.xMax) velocity.current.x *= -0.5;
     if (mesh.position.z === bounds.zMin || mesh.position.z === bounds.zMax) velocity.current.z *= -0.5;
 
-    // Apply depth scale every frame based on current z within bounds
     const t = (mesh.position.z - bounds.zMin) / (bounds.zMax - bounds.zMin);
     const scale = THREE.MathUtils.lerp(MIN_SCALE, MAX_SCALE, THREE.MathUtils.clamp(t, 0, 1));
     mesh.scale.setScalar(scale);
   });
 
   const handlePointerMove = (e) => {
+    // Ignore stray moves from a second finger while one is already dragging
+    if (isDragging.current && e.pointerId !== activePointerId.current) return;
+
     const clampedZ = clamp(e.point.z, bounds.zMin, bounds.zMax);
     const clampedX = clamp(e.point.x, bounds.xMin, bounds.xMax);
     mouseTarget.current.set(clampedX, 0, clampedZ);
@@ -171,13 +172,23 @@ function LawnBowl({ bounds, onDragChange, meshRefOut }) {
   };
 
   const handlePointerDown = (e) => {
+    // Already dragging with another finger — ignore additional touches
+    if (isDragging.current) return;
+
     isDragging.current = true;
+    activePointerId.current = e.pointerId;
     dragStart.current = { x: e.point.x, z: e.point.z, time: performance.now() };
     velocity.current.set(0, 0, 0);
     onDragChange?.(true);
+
+    // Pointer capture — keeps move/up events targeted at this element even if
+    // the finger slides fast or briefly leaves the hit area (main mobile fix)
+    e.target?.setPointerCapture?.(e.pointerId);
   };
 
   const handlePointerUp = (e) => {
+    if (e.pointerId !== undefined && e.pointerId !== activePointerId.current) return;
+
     if (isDragging.current && dragStart.current) {
       const dt = Math.max((performance.now() - dragStart.current.time) / 1000, 0.05);
       const dx = e.point.x - dragStart.current.x;
@@ -189,19 +200,20 @@ function LawnBowl({ bounds, onDragChange, meshRefOut }) {
       }
     }
     isDragging.current = false;
+    activePointerId.current = null;
     dragStart.current = null;
     onDragChange?.(false);
   };
 
   return (
     <>
-      {/* Catcher plane sized to cover the full extended play field */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -0.5, 0]}
-        onPointerMove={handlePointerMove}
         onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         onPointerOut={handlePointerUp}
       >
         <planeGeometry args={[26, 26]} />
@@ -235,12 +247,12 @@ export default function Scene3D({ onDragChange, dragging }) {
 
   return (
     <Canvas
-      shadows
-      camera={{ position: [0, 7.5, 9.5], fov: 50 }}
-      style={{ position: 'absolute', inset: 0 }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: false }}
-      onCreated={({ gl }) => gl.setClearColor('#bfe9ff')}
+       shadows
+  camera={{ position: [0, 7.5, 9.5], fov: 50 }}
+  style={{ position: 'absolute', inset: 0, touchAction: 'none' }}
+  dpr={[1, 2]}
+  gl={{ antialias: true, alpha: false }}
+  onCreated={({ gl }) => gl.setClearColor('#bfe9ff')}
     >
       <hemisphereLight args={['#bfe9ff', '#3c7a3f', 0.9]} />
       <ambientLight intensity={0.5} />
