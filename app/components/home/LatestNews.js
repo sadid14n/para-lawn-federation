@@ -112,82 +112,64 @@ export default function LatestNews() {
         </div>
 
         {/* ================= PREMIUM REGISTRATION BANNER ================= */}
-        <div className="relative w-full rounded-[2rem] lg:rounded-[3rem] bg-[#1E2265] overflow-hidden shadow-[0_20px_50px_rgba(30,34,101,0.25)] mb-24 group">
-          
-          {/* 1. Abstract Ambient Glows (Orange and Green mix for an Indian Flag effect) */}
-          <div className="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-[#EF7D20] rounded-full mix-blend-screen filter blur-[120px] opacity-20 group-hover:opacity-40 transition-opacity duration-1000"></div>
-          <div className="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] bg-[#228B45] rounded-full mix-blend-screen filter blur-[120px] opacity-40 group-hover:opacity-60 transition-opacity duration-1000"></div>
+        {/* ================= REGISTRATION BANNER ================= */}
+<div className="relative w-full rounded-[2rem] lg:rounded-[2.5rem] bg-[#1E2265] overflow-hidden mb-24">
 
-          {/* 2. Oversized Federation Watermark - Updated to PILBF */}
-          <div className="absolute -bottom-10 -right-6 text-[120px] md:text-[180px] font-black text-white/[0.04] tracking-tighter leading-none pointer-events-none select-none group-hover:scale-105 transition-transform duration-1000">
-            PILBF
-          </div>
+  {/* Single soft ambient glow — subtle, not competing with the content */}
+  <div className="absolute -bottom-40 -right-40 w-[36rem] h-[36rem] bg-[#EF7D20] rounded-full mix-blend-screen filter blur-[140px] opacity-20"></div>
 
-          {/* 3. Aesthetic Architectural Grid Pattern */}
-          <div 
-            className="absolute inset-0 opacity-10 pointer-events-none" 
-            style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}
-          ></div>
+  {/* Faint watermark text — kept, but toned down further */}
+  <div className="absolute -bottom-6 -right-4 text-[100px] md:text-[160px] font-black text-white/[0.03] tracking-tighter leading-none pointer-events-none select-none">
+    PILBF
+  </div>
 
-          {/* Content Wrapper */}
-          <div className="relative z-10 p-10 md:p-14 lg:p-20 flex flex-col lg:flex-row items-center justify-between border border-white/10 rounded-[2rem] lg:rounded-[3rem]">
-            
-            {/* Left Side: Icon & Text */}
-            <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left mb-12 lg:mb-0 w-full lg:w-2/3">
-              
-              {/* Glowing Icon Ring - Saffron Orange pulse */}
-              <div className="relative flex items-center justify-center mb-8 md:mb-0 md:mr-10 shrink-0">
-                <div className="absolute inset-0 bg-[#EF7D20] rounded-full blur-xl opacity-30 animate-pulse"></div>
-                <div className="relative w-20 h-20 rounded-[1.2rem] bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
-                  <FiUsers className="text-white drop-shadow-md" size={36} />
-                </div>
-              </div>
+  {/* Rolling ball accent line — pure CSS, no 3D, no JS. A small dot rolls
+      left-to-right along a thin rule, echoing the hero without any extra weight */}
+  <div className="absolute top-0 left-0 w-full h-px overflow-hidden">
+    <div className="w-full h-full bg-white/10"></div>
+    <div className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#EF7D20] animate-[roll_6s_linear_infinite]"></div>
+  </div>
 
-              {/* Text Block */}
-              <div className="flex flex-col">
-                {/* Live Status Indicator - Forest Green */}
-                <div className="inline-flex items-center justify-center md:justify-start space-x-2 mb-4">
-                  <div className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#228B45] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#228B45]"></span>
-                  </div>
-                  <span className="text-[#228B45] text-xs font-bold tracking-[0.2em] uppercase drop-shadow-sm">
-                    Membership Open
-                  </span>
-                </div>
-                
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight leading-tight">
-                  Join The Federation
-                </h3>
-                <p className="text-blue-100/80 text-base md:text-lg max-w-xl font-light leading-relaxed">
-                  Register as a para-athlete, coach, or official today and become a vital part of India's most inclusive sporting community.
-                </p>
-              </div>
-            </div>
+  <style>{`
+    @keyframes roll {
+      0% { left: -2%; }
+      100% { left: 102%; }
+    }
+  `}</style>
 
-            {/* Right Side: High-End Interactive Button */}
-            <div className="shrink-0 w-full md:w-auto flex justify-center">
-              <Link 
-                href="/register" 
-                className="group/btn relative inline-flex items-center justify-center overflow-hidden rounded-full p-[2px] transition-all duration-300 w-full sm:w-auto"
-              >
-                {/* Spinning Gradient Border - Orange and Navy */}
-                <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#EF7D20_0%,#1E2265_50%,#EF7D20_100%)] opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
-                
-                {/* Inner Button Content */}
-                <div className="relative inline-flex items-center justify-center bg-white text-[#1E2265] px-8 lg:px-10 py-4 lg:py-5 font-bold text-base lg:text-lg rounded-full w-full shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/btn:bg-gray-50">
-                  Start Registration
-                  
-                  {/* Circular Arrow Pill - Saffron Orange Hover */}
-                  <div className="ml-4 w-10 h-10 rounded-full bg-[#1E2265]/5 border border-[#1E2265]/10 flex items-center justify-center group-hover/btn:bg-[#EF7D20] group-hover/btn:border-[#EF7D20] group-hover/btn:text-white transition-colors duration-300">
-                    <FiChevronRight className="group-hover/btn:translate-x-0.5 transition-transform" size={20} />
-                  </div>
-                </div>
-              </Link>
-            </div>
+  {/* Content */}
+  <div className="relative z-10 px-10 py-14 md:px-16 md:py-20 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
 
-          </div>
-        </div>
+    {/* Left: Text only, no icon, no status pill */}
+    <div className="text-center lg:text-left max-w-xl">
+      <span className="text-[11px] tracking-[0.3em] uppercase text-[#EF7D20] font-semibold mb-4 block">
+        Membership Open
+      </span>
+
+      <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight leading-[1.15]">
+        Join The Federation
+      </h3>
+
+      <p className="text-blue-100/70 text-base md:text-lg font-normal leading-relaxed">
+        Register as a para-athlete, coach, or official and become part of India's most inclusive sporting community.
+      </p>
+    </div>
+
+    {/* Right: One clean button, no icon */}
+    <div className="shrink-0 w-full lg:w-auto flex justify-center">
+      <Link
+        href="/register"
+        className="group inline-flex items-center justify-center bg-white text-[#1E2265] px-9 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:bg-[#EF7D20] hover:text-white w-full sm:w-auto"
+      >
+        Start Registration
+        <span className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-1">
+          →
+        </span>
+      </Link>
+    </div>
+
+  </div>
+</div>
 
         {/* ================= OFFICIAL PARTNERS ================= */}
         <div className="text-center">
