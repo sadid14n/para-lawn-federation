@@ -14,6 +14,7 @@ export default function Hero() {
   const cursorRef = useRef(null);
   const quickTo = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isInView, setIsInView] = useState(true); // NEW
 
   const badgeRef = useRef(null);
   const headingRef = useRef(null);
@@ -22,6 +23,20 @@ export default function Hero() {
   const subRef = useRef(null);
   const ctaRef = useRef(null);
   const hintRef = useRef(null);
+
+  // NEW — pauses the 3D render loop once the hero scrolls off-screen
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -84,9 +99,6 @@ export default function Hero() {
   return (
     <div
       ref={containerRef}
-      // Sky-blue canvas backdrop kept as-is — it's tied directly to Scene3D's
-      // clearColor for the 3D ball field, not a brand/UI color, so it's
-      // intentionally exempt from the navy/accent token system.
       className="relative w-full h-[75vh] md:h-[80vh] lg:h-[88vh] overflow-hidden bg-[#bfe9ff] md:cursor-none"
     >
       <div
@@ -102,7 +114,8 @@ export default function Hero() {
       <CanvasErrorBoundary
         fallback={<div className="absolute inset-0 bg-gradient-to-b from-[#bfe9ff] to-navy" />}
       >
-        <Scene3D onDragChange={setIsDragging} dragging={isDragging} />
+        {/* CHANGED — added active={isInView} */}
+        <Scene3D onDragChange={setIsDragging} dragging={isDragging} active={isInView} />
       </CanvasErrorBoundary>
 
       <div
@@ -113,12 +126,9 @@ export default function Hero() {
         }}
       />
 
-      {/* Overlay gradients — now use the navy-dark token instead of a
-          one-off #0d1b3f shade that existed nowhere else on the site */}
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-navy-dark/80 via-navy-dark/10 to-transparent pointer-events-none md:hidden" />
       <div className="hidden md:block absolute inset-0 z-10 bg-gradient-to-r from-navy-dark/75 via-navy-dark/15 to-transparent pointer-events-none" />
 
-      {/* Mobile layout */}
       <div className="absolute inset-x-0 top-0 z-20 flex md:hidden flex-col items-center pt-5 px-6 pointer-events-none">
         <span
           ref={mobileBadgeRef}
@@ -134,7 +144,6 @@ export default function Hero() {
         </h1>
       </div>
 
-      {/* Desktop layout */}
       <div className="absolute inset-0 z-20 hidden md:flex flex-col items-start justify-center pl-12 lg:pl-20 pointer-events-none">
         <div className="text-left max-w-md pointer-events-none">
           <span
@@ -178,8 +187,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Hint — removed the stray invalid "pl-18" utility class that was left over */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full z-20 flex flex-col items-center text-center pointer-events-none px-6 pl-18">
+      <div className="absolute bottom-8  w-full z-20 flex flex-col items-center text-center pointer-events-none left-1/2 -translate-x-1/2 pl-12">
         <span
           ref={hintRef}
           className="text-[11px] tracking-[0.2em] uppercase text-white font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] bg-black/25 backdrop-blur-sm px-4 py-1.5 rounded-full"

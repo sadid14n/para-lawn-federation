@@ -5,7 +5,6 @@ import { ContactShadows } from '@react-three/drei';
 import { useRef, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
-// --- Grass texture (unchanged from before) ---
 function hash(x, y) {
   const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
   return s - Math.floor(s);
@@ -90,31 +89,22 @@ function GrassGround() {
   );
 }
 
-// --- Ball roster: original burgundy ball + 4 more, each a distinct color ---
 const BALL_RADIUS = 0.55;
 const BALL_COLORS = [
-  { body: '#8a2332', ring: '#FFD93D' }, // burgundy — original
-  { body: '#122a52', ring: '#FFD93D' }, // navy
-  { body: '#1b4d3e', ring: '#FFD93D' }, // forest green
-  { body: '#4a2545', ring: '#FFD93D' }, // plum
-  { body: '#2b2b2b', ring: '#FFD93D' }, // charcoal
+  { body: '#8a2332', ring: '#FFD93D' },
+  { body: '#122a52', ring: '#FFD93D' },
+  { body: '#1b4d3e', ring: '#FFD93D' },
+  { body: '#4a2545', ring: '#FFD93D' },
+  { body: '#2b2b2b', ring: '#FFD93D' },
 ];
-// const INITIAL_POSITIONS = [
-//   [0, 0, 1.5],
-//   [-2.4, 0, -1.2],
-//   [2.2, 0, 0.4],
-//   [-1.3, 0, 3.0],
-//   [1.8, 0, -3.2],
-// ];
 const INITIAL_POSITIONS = [
-  [0, 0, 1.5],     // near, center — original
-  [-2.8, 0, -5.5], // far back, left — top section
-  [2.4, 0, -6.5],  // far back, right — top section
-  [-1.3, 0, -2.0], // mid
-  [1.8, 0, 3.6],   // near, right
+  [0, 0, 1.5],
+  [-2.8, 0, -5.5],
+  [2.4, 0, -6.5],
+  [-1.3, 0, -2.0],
+  [1.8, 0, 3.6],
 ];
 
-// --- Glow that follows whichever ball is currently active (or the first ball at rest) ---
 function InviteGlow({ ballRef, activeIndexRef, isDragging }) {
   const glowRef = useRef();
   const pulse = useRef(0);
@@ -145,7 +135,6 @@ function InviteGlow({ ballRef, activeIndexRef, isDragging }) {
   );
 }
 
-// --- Manages all balls: movement, bounds, depth-scale, collisions, and drag input ---
 function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
   const { gl } = useThree();
   const velocities = useRef(INITIAL_POSITIONS.map(() => new THREE.Vector3()));
@@ -156,9 +145,9 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
   const MIN_SCALE = 0.4;
   const MAX_SCALE = 1.25;
   const GRAB_RADIUS = 1.1;
-  const RESTITUTION = 0.7; // 1 = perfectly bouncy, 0 = balls stop dead on impact
+  const RESTITUTION = 0.7;
 
-    const releaseActiveBall = () => {
+  const releaseActiveBall = () => {
     const idx = activeIndexRef.current;
     if (idx === null) return;
     activeIndexRef.current = null;
@@ -168,8 +157,6 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
   };
 
   useEffect(() => {
-    // Listens on the whole window, not just the canvas — catches pointerup/cancel
-    // events that fire outside the canvas bounds (e.g. finger drags off-screen)
     window.addEventListener('pointerup', releaseActiveBall);
     window.addEventListener('pointercancel', releaseActiveBall);
     return () => {
@@ -183,14 +170,10 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
     const vels = velocities.current;
     const FRICTION_PER_SECOND = 0.985;
 
-
-    // Move, apply friction, clamp to field bounds — skip the ball currently being dragged
     balls.forEach((mesh, i) => {
       if (!mesh || activeIndexRef.current === i) return;
 
-
-    //   vels[i].multiplyScalar(0.985);
-    vels[i].multiplyScalar(Math.pow(FRICTION_PER_SECOND, delta * 60));
+      vels[i].multiplyScalar(Math.pow(FRICTION_PER_SECOND, delta * 60));
       mesh.position.x += vels[i].x * delta;
       mesh.position.z += vels[i].z * delta;
 
@@ -204,7 +187,6 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
       if (mesh.position.z === bounds.zMin || mesh.position.z === bounds.zMax) vels[i].z *= -0.5;
     });
 
-    // Depth-based scale — every ball, including the dragged one
     balls.forEach((mesh) => {
       if (!mesh) return;
       const t = (mesh.position.z - bounds.zMin) / (bounds.zMax - bounds.zMin);
@@ -212,7 +194,6 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
       mesh.scale.setScalar(scale);
     });
 
-    // Pairwise collision — cheap at 5 balls (10 pairs/frame)
     for (let i = 0; i < balls.length; i++) {
       for (let j = i + 1; j < balls.length; j++) {
         const a = balls[i];
@@ -231,7 +212,6 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
           const aFixed = activeIndexRef.current === i;
           const bFixed = activeIndexRef.current === j;
 
-          // Push apart along the collision normal — never displace the ball the user is dragging
           if (!aFixed) {
             a.position.x -= nx * overlap * (bFixed ? 1 : 0.5);
             a.position.z -= nz * overlap * (bFixed ? 1 : 0.5);
@@ -241,7 +221,6 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
             b.position.z += nz * overlap * (aFixed ? 1 : 0.5);
           }
 
-          // Elastic bounce — equal-mass 2D collision response
           const va = vels[i];
           const vb = vels[j];
           const relVelAlongNormal = (vb.x - va.x) * nx + (vb.z - va.z) * nz;
@@ -276,20 +255,7 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
     mesh.position.z = clamp(e.point.z, bounds.zMin, bounds.zMax);
   };
 
-//   const handlePointerDown = (e) => {
-//     if (activeIndexRef.current !== null) return;
-//     const { nearestIdx, nearestDist } = findNearestBall(e.point);
-//     if (nearestIdx === null || nearestDist > GRAB_RADIUS) return;
-
-//     activeIndexRef.current = nearestIdx;
-//     activePointerIdRef.current = e.pointerId;
-//     dragStartRef.current = { x: e.point.x, z: e.point.z, time: performance.now() };
-//     velocities.current[nearestIdx].set(0, 0, 0);
-//     onDragChange?.(true);
-//     e.target?.setPointerCapture?.(e.pointerId);
-//   };
-
- const handlePointerDown = (e) => {
+  const handlePointerDown = (e) => {
     if (activeIndexRef.current !== null) return;
     const { nearestIdx, nearestDist } = findNearestBall(e.point);
     if (nearestIdx === null || nearestDist > GRAB_RADIUS) return;
@@ -299,8 +265,6 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
     dragStartRef.current = { x: e.point.x, z: e.point.z, time: performance.now() };
     velocities.current[nearestIdx].set(0, 0, 0);
     onDragChange?.(true);
-
-    // Capture on the REAL canvas DOM element, not e.target
     gl.domElement.setPointerCapture?.(e.pointerId);
   };
 
@@ -361,79 +325,7 @@ function BallsField({ bounds, onDragChange, ballRef, activeIndexRef }) {
   );
 }
 
-// --- Camera dollies in and reframes toward whichever ball is being played ---
-function CameraRig({ activeIndexRef, ballRef }) {
-  const { camera } = useThree();
-  const defaultPos = useMemo(() => new THREE.Vector3(0, 7.5, 9.5), []);
-  const lookTarget = useRef(new THREE.Vector3(0, 0, 0));
-
-  useFrame(() => {
-    const idx = activeIndexRef.current;
-    const mesh = idx !== null ? ballRef.current[idx] : null;
-
-    let targetPos = defaultPos;
-    let targetLook = new THREE.Vector3(0, 0, 0);
-
-    if (mesh) {
-      targetPos = new THREE.Vector3(
-        THREE.MathUtils.clamp(mesh.position.x * 0.3, -2, 2),
-        6.0,
-        7.2
-      );
-      targetLook = new THREE.Vector3(mesh.position.x, 0, mesh.position.z);
-    }
-
-    camera.position.lerp(targetPos, 0.06);
-    lookTarget.current.lerp(targetLook, 0.06);
-    camera.lookAt(lookTarget.current);
-  });
-
-  return null;
-}
-
-// export default function Scene3D({ onDragChange, dragging }) {
-//   const bounds = { xMin: -4.5, xMax: 4.5, zMin: -8, zMax: 4.8 };
-//   const ballRef = useRef([]);
-//   const activeIndexRef = useRef(null);
-//   const isDraggingRef = useRef(false);
-
-//   useEffect(() => {
-//     isDraggingRef.current = dragging;
-//   }, [dragging]);
-
-//   return (
-//     <Canvas
-//       shadows
-//       camera={{ position: [0, 7.5, 9.5], fov: 50 }}
-//       style={{ position: 'absolute', inset: 0, touchAction: 'pan-y' }}
-//       dpr={[1, 2]}
-//       gl={{ antialias: true, alpha: false }}
-//       onCreated={({ gl }) => {
-//         gl.setClearColor('#bfe9ff');
-//         const canvas = gl.domElement;
-//         const onTouchMove = (e) => {
-//           if (isDraggingRef.current) e.preventDefault();
-//         };
-//         canvas.addEventListener('touchmove', onTouchMove, { passive: false });
-//       }}
-//     >
-//       <hemisphereLight args={['#bfe9ff', '#3c7a3f', 0.9]} />
-//       <ambientLight intensity={0.5} />
-//       <directionalLight position={[5, 9, 4]} intensity={1.8} castShadow color="#fff8e7" />
-//       <pointLight position={[-4, 2, 2]} intensity={1.2} color="#a7c7ff" />
-//       <pointLight position={[3, 1.5, 5]} intensity={1.0} color="#ffe1b8" />
-
-//       <GrassGround />
-//       <BallsField bounds={bounds} onDragChange={onDragChange} ballRef={ballRef} activeIndexRef={activeIndexRef} />
-//       <InviteGlow ballRef={ballRef} activeIndexRef={activeIndexRef} isDragging={dragging} />
-//       <CameraRig activeIndexRef={activeIndexRef} ballRef={ballRef} />
-
-//       <ContactShadows position={[0, -0.5, 0]} opacity={0.5} scale={20} blur={2.2} far={3} />
-//     </Canvas>
-//   );
-// }
-
-export default function Scene3D({ onDragChange, dragging }) {
+export default function Scene3D({ onDragChange, dragging, active = true }) {
   const bounds = { xMin: -4.5, xMax: 4.5, zMin: -8, zMax: 4.8 };
   const ballRef = useRef([]);
   const activeIndexRef = useRef(null);
@@ -443,13 +335,16 @@ export default function Scene3D({ onDragChange, dragging }) {
     isDraggingRef.current = dragging;
   }, [dragging]);
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
   return (
     <Canvas
-      shadows
+      shadows={!isMobile}
       camera={{ position: [0, 7.5, 9.5], fov: 50 }}
       style={{ position: 'absolute', inset: 0, touchAction: 'pan-y' }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: false }}
+      dpr={isMobile ? [1, 1.5] : [1, 2]}
+      gl={{ antialias: !isMobile, alpha: false }}
+      frameloop={active ? 'always' : 'never'}
       onCreated={({ gl }) => {
         gl.setClearColor('#bfe9ff');
         const canvas = gl.domElement;
@@ -461,16 +356,17 @@ export default function Scene3D({ onDragChange, dragging }) {
     >
       <hemisphereLight args={['#bfe9ff', '#3c7a3f', 0.9]} />
       <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 9, 4]} intensity={1.8} castShadow color="#fff8e7" />
+      <directionalLight position={[5, 9, 4]} intensity={1.8} castShadow={!isMobile} color="#fff8e7" />
       <pointLight position={[-4, 2, 2]} intensity={1.2} color="#a7c7ff" />
       <pointLight position={[3, 1.5, 5]} intensity={1.0} color="#ffe1b8" />
 
       <GrassGround />
       <BallsField bounds={bounds} onDragChange={onDragChange} ballRef={ballRef} activeIndexRef={activeIndexRef} />
       <InviteGlow ballRef={ballRef} activeIndexRef={activeIndexRef} isDragging={dragging} />
-      {/* CameraRig removed — camera now stays fixed, so drag input mapping never shifts mid-play */}
 
-      <ContactShadows position={[0, -0.5, 0]} opacity={0.5} scale={20} blur={2.2} far={3} />
+      {!isMobile && (
+        <ContactShadows position={[0, -0.5, 0]} opacity={0.5} scale={20} blur={2.2} far={3} />
+      )}
     </Canvas>
   );
 }
