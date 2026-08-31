@@ -68,7 +68,6 @@ export default function WelcomeSection() {
               className="inline-flex items-center bg-accent text-white px-8 py-4 font-bold text-sm md:text-base rounded-full hover:bg-accent-dark hover:-translate-y-1 transition-all duration-300 shadow-[0_10px_20px_rgba(239,125,32,0.3)] group"
             >
               Our Mission
-              <FiChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
             </Link>
 
           </div>

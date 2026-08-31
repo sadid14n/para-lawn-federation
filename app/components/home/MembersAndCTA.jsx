@@ -74,9 +74,9 @@ export default function MembersAndCTA() {
           <div className="flex w-max animate-ticker items-center group-hover:[animation-play-state:paused] transition-all">
             {marqueeLogos.map((logo, index) => (
               <div
-                key={index}
-                className="w-40 h-24 md:w-72 md:h-40 mx-2 md:mx-6 flex items-center justify-center p-4 md:p-8 cursor-pointer transition-transform duration-300 ease-out hover:scale-110"
-              >
+  key={index}
+  className="w-24 h-16 md:w-72 md:h-40 mx-1 md:mx-6 flex items-center justify-center p-2 md:p-8 cursor-pointer transition-transform duration-300 ease-out hover:scale-110"
+>
                 <img
                   src={logo.img}
                   alt={logo.name}
@@ -116,10 +116,6 @@ export default function MembersAndCTA() {
               className="group flex items-center justify-center bg-accent text-white px-8 py-4 font-bold text-base hover:bg-accent-dark transition-all duration-300 shadow-[0_10px_20px_rgba(239,125,32,0.3)] hover:shadow-[0_15px_30px_rgba(239,125,32,0.5)] rounded-full hover:-translate-y-1"
             >
               Register as Athlete
-              <FiChevronRight
-                className="ml-2 group-hover:translate-x-1 transition-transform"
-                size={20}
-              />
             </Link>
 
             <Link

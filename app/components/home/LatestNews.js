@@ -63,7 +63,6 @@ export default function LatestNews() {
             className="group inline-flex items-center justify-center bg-white border-2 border-gray-100 text-navy px-8 py-4 mt-8 md:mt-0 font-bold text-sm hover:border-navy hover:bg-navy hover:text-white transition-all duration-300 rounded-full shadow-sm hover:shadow-xl"
           >
             View All Updates
-            <FiChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
           </Link>
         </div>
 
@@ -143,9 +142,7 @@ export default function LatestNews() {
                 className="group inline-flex items-center justify-center bg-white text-navy px-9 py-4 rounded-full font-bold text-base transition-all duration-300 hover:bg-accent hover:text-white w-full sm:w-auto"
               >
                 Start Registration
-                <span className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
+               
               </Link>
             </div>
 
