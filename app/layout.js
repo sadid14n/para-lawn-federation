@@ -1,14 +1,23 @@
-import { Plus_Jakarta_Sans } from "next/font/google";
-import { cookies } from 'next/headers';
+import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { cookies } from "next/headers";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import "./globals.css";
 
-// Initialize the font
-const jakarta = Plus_Jakarta_Sans({ 
+// Body/UI font — unchanged
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  // This variable makes it easy to use with Tailwind if needed
-  variable: '--font-jakarta', 
+  variable: "--font-jakarta",
+});
+
+// Display font — now Inter, still exposed as the same --font-display
+// variable so every component using var(--font-display) picks it up
+// automatically with zero other changes needed.
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["600", "700", "800"],
 });
 
 export const metadata = {
@@ -16,26 +25,21 @@ export const metadata = {
   description: "National Governing Body for Para Lawn Bowls in India",
 };
 
-export default  async function RootLayout({ children }) {
-
+export default async function RootLayout({ children }) {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get('session');
+  const sessionCookie = cookieStore.get("session");
   const session = sessionCookie ? JSON.parse(sessionCookie.value) : null;
-
 
   return (
     <html lang="en">
-      <body className={`${jakarta.className} antialiased flex flex-col min-h-screen`}>
-          {/* Render the unified Header (Top + Main Nav) */}
-        <Header session={session}/>
-        
-        {/* main flex-grow pushes footer down if content is small */}
-        <main className="flex-grow w-full">
-          {children}
-        </main>
-        
-        {/* Render the Footer */}
-        <Footer />
+      <body
+        className={`${jakarta.className} ${jakarta.variable} ${inter.variable} antialiased flex flex-col min-h-screen`}
+      >
+        <SmoothScrollProvider>
+          <Header session={session} />
+          <main className="flex-grow w-full">{children}</main>
+          <Footer />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

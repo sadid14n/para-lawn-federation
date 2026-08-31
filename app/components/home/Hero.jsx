@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
-import { FiArrowRight, FiChevronDown } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 import { gsap } from "gsap";
 import CanvasErrorBoundary from "./CanvasErrorBoundary";
 
@@ -17,6 +17,8 @@ export default function Hero() {
 
   const badgeRef = useRef(null);
   const headingRef = useRef(null);
+  const mobileBadgeRef = useRef(null);
+  const mobileHeadingRef = useRef(null);
   const subRef = useRef(null);
   const ctaRef = useRef(null);
   const hintRef = useRef(null);
@@ -24,11 +26,19 @@ export default function Hero() {
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.set(
-      [badgeRef.current, headingRef.current, subRef.current, ctaRef.current, hintRef.current],
+      [
+        badgeRef.current,
+        mobileBadgeRef.current,
+        headingRef.current,
+        mobileHeadingRef.current,
+        subRef.current,
+        ctaRef.current,
+        hintRef.current,
+      ],
       { opacity: 0, x: -20, y: 0 }
     )
-      .to(badgeRef.current, { opacity: 1, x: 0, duration: 0.6 }, 0.1)
-      .to(headingRef.current, { opacity: 1, x: 0, duration: 0.8 }, 0.25)
+      .to([badgeRef.current, mobileBadgeRef.current], { opacity: 1, x: 0, duration: 0.6 }, 0.1)
+      .to([headingRef.current, mobileHeadingRef.current], { opacity: 1, x: 0, duration: 0.8 }, 0.25)
       .to(subRef.current, { opacity: 1, x: 0, duration: 0.7 }, 0.5)
       .to(ctaRef.current, { opacity: 1, x: 0, duration: 0.6 }, 0.65)
       .to(hintRef.current, { opacity: 1, y: 0, duration: 0.6 }, 0.85);
@@ -64,8 +74,8 @@ export default function Hero() {
     if (!cursorRef.current) return;
     gsap.to(cursorRef.current, {
       scale: isDragging ? 1.6 : 1,
-      backgroundColor: isDragging ? "rgba(255,217,61,0.9)" : "rgba(255,255,255,0.9)",
-      borderColor: isDragging ? "rgba(255,217,61,1)" : "rgba(255,255,255,0.6)",
+      backgroundColor: isDragging ? "rgba(239,125,32,0.9)" : "rgba(255,255,255,0.9)",
+      borderColor: isDragging ? "rgba(239,125,32,1)" : "rgba(255,255,255,0.6)",
       duration: 0.3,
       ease: "power2.out",
     });
@@ -74,6 +84,9 @@ export default function Hero() {
   return (
     <div
       ref={containerRef}
+      // Sky-blue canvas backdrop kept as-is — it's tied directly to Scene3D's
+      // clearColor for the 3D ball field, not a brand/UI color, so it's
+      // intentionally exempt from the navy/accent token system.
       className="relative w-full h-[75vh] md:h-[80vh] lg:h-[88vh] overflow-hidden bg-[#bfe9ff] md:cursor-none"
     >
       <div
@@ -87,7 +100,7 @@ export default function Hero() {
       />
 
       <CanvasErrorBoundary
-        fallback={<div className="absolute inset-0 bg-gradient-to-b from-[#bfe9ff] to-[#3c7a3f]" />}
+        fallback={<div className="absolute inset-0 bg-gradient-to-b from-[#bfe9ff] to-navy" />}
       >
         <Scene3D onDragChange={setIsDragging} dragging={isDragging} />
       </CanvasErrorBoundary>
@@ -100,69 +113,63 @@ export default function Hero() {
         }}
       />
 
-      {/* Mobile: darken TOP (text sits there). Desktop: darken LEFT only, leaving the whole right side bright for play. */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0d1b3f]/80 via-[#0d1b3f]/10 to-transparent pointer-events-none md:hidden" />
-      <div className="hidden md:block absolute inset-0 z-10 bg-gradient-to-r from-[#0d1b3f]/75 via-[#0d1b3f]/15 to-transparent pointer-events-none" />
+      {/* Overlay gradients — now use the navy-dark token instead of a
+          one-off #0d1b3f shade that existed nowhere else on the site */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-navy-dark/80 via-navy-dark/10 to-transparent pointer-events-none md:hidden" />
+      <div className="hidden md:block absolute inset-0 z-10 bg-gradient-to-r from-navy-dark/75 via-navy-dark/15 to-transparent pointer-events-none" />
 
-{/* Mobile layout: compact single strip, hugging the top — maximizes play area below */}
-<div className="absolute inset-x-0 top-0 z-20 flex md:hidden flex-col items-center pt-5 px-6 pointer-events-none">
-  <span className="text-[9px] tracking-[0.25em] uppercase text-white/50 font-medium mb-1.5">
-    National Governing Body
-  </span>
-  <h1 className="text-xl font-bold text-white tracking-tight leading-tight text-center drop-shadow-md mb-3">
-    Empowering Abilities. On The Green.
-  </h1>
+      {/* Mobile layout */}
+      <div className="absolute inset-x-0 top-0 z-20 flex md:hidden flex-col items-center pt-5 px-6 pointer-events-none">
+        <span
+          ref={mobileBadgeRef}
+          className="text-[9px] tracking-[0.25em] uppercase text-white/50 font-bold mb-1.5"
+        >
+          National Governing Body
+        </span>
+        <h1
+          ref={mobileHeadingRef}
+          className="font-[family-name:var(--font-display)] font-extrabold text-xl text-white tracking-tight leading-tight text-center drop-shadow-md mb-3"
+        >
+          Empowering abilities. On the green.
+        </h1>
+      </div>
 
-  {/* <Link
-    href="/register"
-    className="pointer-events-auto flex items-center justify-center bg-white text-[#0d1b3f] px-5 py-2 rounded-full font-semibold text-xs transition-all duration-300 active:bg-[#EF7D20] active:text-white"
-  >
-    Register Athlete
-  </Link> */}
-{/* 
-  <Link
-    href="/about"
-    className="pointer-events-auto flex items-center justify-center text-white/80 active:text-white px-4 py-2 text-xs font-medium underline underline-offset-4 decoration-white/30 transition-colors duration-300"
-  >
-    Discover Sport
-  </Link> */}
-</div>
-
-      {/* Desktop layout: left-anchored panel, vertically centered, right two-thirds left clear for play */}
+      {/* Desktop layout */}
       <div className="absolute inset-0 z-20 hidden md:flex flex-col items-start justify-center pl-12 lg:pl-20 pointer-events-none">
         <div className="text-left max-w-md pointer-events-none">
           <span
             ref={badgeRef}
-            className="text-[11px] tracking-[0.3em] uppercase text-white/60 font-medium mb-5 block"
+            className="text-[11px] tracking-[0.3em] uppercase text-white/60 font-bold mb-5 block"
           >
             National Governing Body
           </span>
 
           <h1
             ref={headingRef}
-            className="text-5xl lg:text-6xl font-bold text-white mb-5 tracking-tight leading-[1.1] drop-shadow-md"
+            className="font-[family-name:var(--font-display)] font-extrabold text-5xl lg:text-6xl text-white mb-5 tracking-tight leading-[1.1] drop-shadow-md"
           >
-            Empowering
+            Empowering abilities.
             <br />
-            Abilities.
-            <br />
-            On The Green.
+            On the green.
           </h1>
 
-          <p ref={subRef} className="text-base text-white/70 font-normal mb-9 max-w-sm leading-relaxed">
+          <p
+            ref={subRef}
+            className="text-base text-white/70 font-medium mb-9 max-w-sm leading-relaxed"
+          >
             Making para lawn bowls accessible and competitive across India.
           </p>
 
           <div ref={ctaRef} className="flex items-center gap-3 pointer-events-auto">
             <Link
               href="/register"
-              className="flex items-center justify-center bg-white text-[#0d1b3f] px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:bg-[#EF7D20] hover:text-white"
+              className="flex items-center justify-center bg-white text-navy px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 hover:bg-accent hover:text-white"
             >
               Register Athlete
             </Link>
             <Link
               href="/about"
-              className="group flex items-center justify-center text-white px-5 py-3 rounded-full font-medium text-sm border border-white/30 hover:border-white/60 transition-all duration-300"
+              className="group flex items-center justify-center text-white px-5 py-3 rounded-full font-bold text-sm border border-white/30 hover:border-white/60 transition-all duration-300"
             >
               Discover Sport
               <FiArrowRight className="ml-1.5 group-hover:translate-x-1 transition-transform" size={14} />
@@ -171,16 +178,15 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Hint stays bottom-center on both — it's referencing the play field generally, not one ball's position */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+      {/* Hint — removed the stray invalid "pl-18" utility class that was left over */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full z-20 flex flex-col items-center text-center pointer-events-none px-6 pl-18">
         <span
           ref={hintRef}
-          className="text-[10px] tracking-[0.2em] uppercase text-white/80 font-medium mb-1 drop-shadow"
+          className="text-[11px] tracking-[0.2em] uppercase text-white font-semibold drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] bg-black/25 backdrop-blur-sm px-4 py-1.5 rounded-full"
         >
           <span className="md:hidden">Touch &amp; drag the ball</span>
           <span className="hidden md:inline">Drag the ball to play</span>
         </span>
-        <FiChevronDown className="text-white/70" size={16} />
       </div>
     </div>
   );

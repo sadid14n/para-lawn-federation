@@ -1,13 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { FiGlobe, FiCalendar, FiUserCheck, FiChevronRight } from 'react-icons/fi';
-import { FaSquareFull } from 'react-icons/fa6';
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import {
+  FiGlobe,
+  FiCalendar,
+  FiUserCheck,
+  FiChevronRight,
+} from "react-icons/fi";
+import { FaSquareFull } from "react-icons/fa6";
 
-// ----------------------------------------------------------------------
-// HELPER COMPONENT: Handles the 0-to-target counting animation
-// ----------------------------------------------------------------------
 const AnimatedCounter = ({ target, suffix = "+", duration = 2000 }) => {
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -18,7 +20,7 @@ const AnimatedCounter = ({ target, suffix = "+", duration = 2000 }) => {
       ([entry]) => {
         if (entry.isIntersecting) setIsVisible(true);
       },
-      { threshold: 0.5 } 
+      { threshold: 0.5 },
     );
 
     if (ref.current) observer.observe(ref.current);
@@ -27,130 +29,152 @@ const AnimatedCounter = ({ target, suffix = "+", duration = 2000 }) => {
 
   useEffect(() => {
     if (!isVisible) return;
-    
+
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      
+
       const easeOut = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(easeOut * target));
-      
+
       if (progress < 1) {
         window.requestAnimationFrame(step);
       }
     };
-    
+
     window.requestAnimationFrame(step);
   }, [isVisible, target, duration]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
 };
 
-// ----------------------------------------------------------------------
-// MAIN COMPONENT
-// ----------------------------------------------------------------------
 export default function StatsSection() {
-  const cardHoverStyles = "flex-1 flex flex-col items-center justify-center p-6 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 group cursor-default text-center transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] mx-4 sm:mx-0";
+  const cardHoverStyles =
+    "flex-1 flex flex-col items-center justify-center p-8 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 group cursor-default text-center transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]";
 
   return (
     <section className="relative w-full py-16 px-4 sm:px-6 lg:px-8">
-      
-      {/* ================= SPLIT BACKGROUND TRICK ================= */}
-      {/* Top Half: Light gray */}
-      <div className="absolute top-0 left-0 w-full h-[60%] bg-[#F3F4F6] z-0"></div>
-      
-      {/* Bottom Half: Updated to Ultra-Dark Navy to seamlessly blend with the Events section below */}
-      <div className="absolute bottom-0 left-0 w-full h-[40%] bg-[#090B24] z-0"></div>
+      <div className="absolute top-0 left-0 w-full h-[60%] bg-off-white z-0"></div>
+      <div className="absolute bottom-0 left-0 w-full h-[40%] bg-navy-dark z-0"></div>
 
-      {/* Main dark container - Added a subtle white border and stronger shadow to make it pop out of the dark background */}
-      <div className="relative z-10 max-w-7xl mx-auto bg-[#1E2265] rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden flex flex-col lg:flex-row">
-        
+      <div className="relative z-10 max-w-7xl mx-auto bg-navy rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden flex flex-col lg:flex-row">
         {/* ================= LEFT COLUMN: TEXT & LIST ================= */}
         <div className="w-full lg:w-[45%] p-10 lg:p-16 flex flex-col justify-center">
-          <p className="text-sm font-bold text-[#EF7D20] tracking-[0.2em] uppercase mb-3">
+          <p className="text-xs font-bold text-accent tracking-[0.25em] uppercase mb-3">
             National Authority
           </p>
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-8 leading-tight tracking-tight">
-            Recognized By
+          <h2 className="font-[family-name:var(--font-display)] font-extrabold text-4xl md:text-5xl text-white mb-8 leading-tight tracking-tight">
+            Recognized by
           </h2>
-          
-          <ul className="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+
+          <ul className="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8 font-medium">
             <li className="flex items-start">
-              <FaSquareFull className="text-[#EF7D20] mt-1.5 mr-4 flex-shrink-0" size={8} />
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
               <span>International Bowls for the Disabled (IBD)</span>
             </li>
             <li className="flex items-start">
-              <FaSquareFull className="text-[#EF7D20] mt-1.5 mr-4 flex-shrink-0" size={8} />
-              <span>Affiliated alongside the Bowling Federation of India (BFI)</span>
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
+              <span>
+                Affiliated alongside the Bowling Federation of India (BFI)
+              </span>
             </li>
             <li className="flex items-start">
-              <FaSquareFull className="text-[#EF7D20] mt-1.5 mr-4 flex-shrink-0" size={8} />
-              <span>Official Pathway for Para Asian Games & Commonwealth Games</span>
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
+              <span>
+                Official Pathway for Para Asian Games & Commonwealth Games
+              </span>
             </li>
             <li className="flex items-start">
-              <FaSquareFull className="text-[#EF7D20] mt-1.5 mr-4 flex-shrink-0" size={8} />
-              <span>Supported by State Para Sports Associations across India</span>
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
+              <span>
+                Supported by State Para Sports Associations across India
+              </span>
             </li>
           </ul>
 
           <p className="text-xs text-gray-400 mb-8 border-t border-white/10 pt-6">
-            Dedicated to the development, regulation, and inclusion of athletes with physical and visual impairments.
+            Dedicated to the development, regulation, and inclusion of athletes
+            with physical and visual impairments.
           </p>
 
           <div>
-            <Link 
-              href="/about" 
-              className="inline-flex items-center bg-white text-[#1E2265] px-8 py-3.5 font-bold text-sm hover:bg-[#EF7D20] hover:text-white transition-colors duration-300 group rounded-full shadow-lg"
+            <Link
+              href="/about"
+              className="inline-flex items-center bg-white text-navy px-8 py-3.5 font-bold text-sm hover:bg-accent hover:text-white transition-colors duration-300 group rounded-full shadow-lg"
             >
               Explore Affiliations
-              <FiChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+              <FiChevronRight
+                className="ml-2 group-hover:translate-x-1 transition-transform"
+                size={18}
+              />
             </Link>
           </div>
         </div>
 
         {/* ================= RIGHT COLUMN: ANIMATED STATS ================= */}
-        <div className="w-full lg:w-[55%] flex flex-col sm:flex-row items-center justify-center p-8 lg:p-0 relative gap-2">
-          
+        <div className="w-full lg:w-[55%] grid grid-cols-3 place-items-center p-8 lg:p-10 gap-4">
           {/* Stat 1 */}
-          <div className={cardHoverStyles}>
+          <div className={`${cardHoverStyles} aspect-square w-full`}>
             <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
-              <FiGlobe className="text-[#1E2265]" size={32} />
+              <FiGlobe className="text-navy" size={32} />
             </div>
-            <h3 className="text-4xl lg:text-5xl font-black text-white mb-2 group-hover:scale-110 group-hover:text-[#EF7D20] transition-all duration-500">
+            <h3 className="font-[family-name:var(--font-display)] text-4xl lg:text-5xl font-extrabold text-white mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
               <AnimatedCounter target={15} />
             </h3>
             <p className="text-xs md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide">
-              States<br/>Represented
+              States
+              <br />
+              Represented
             </p>
           </div>
 
           {/* Stat 2 */}
-          <div className={cardHoverStyles}>
+          <div className={`${cardHoverStyles} aspect-square w-full`}>
             <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
-              <FiCalendar className="text-[#1E2265]" size={32} />
+              <FiCalendar className="text-navy" size={32} />
             </div>
-            <h3 className="text-4xl lg:text-5xl font-black text-white mb-2 group-hover:scale-110 group-hover:text-[#EF7D20] transition-all duration-500">
+            <h3 className="font-[family-name:var(--font-display)] text-4xl lg:text-5xl font-extrabold text-white mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
               <AnimatedCounter target={10} />
             </h3>
             <p className="text-xs md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide">
-              National & State<br/>Events
+              National & State
+              <br />
+              Events
             </p>
           </div>
 
           {/* Stat 3 */}
-          <div className={cardHoverStyles}>
+          <div className={`${cardHoverStyles} aspect-square w-full`}>
             <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
-              <FiUserCheck className="text-[#1E2265]" size={32} />
+              <FiUserCheck className="text-navy" size={32} />
             </div>
-            <h3 className="text-4xl lg:text-5xl font-black text-white mb-2 group-hover:scale-110 group-hover:text-[#EF7D20] transition-all duration-500">
+            <h3 className="font-[family-name:var(--font-display)] text-4xl lg:text-5xl font-extrabold text-white mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
               <AnimatedCounter target={500} />
             </h3>
             <p className="text-xs md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide">
-              Registered<br/>Athletes
+              Registered
+              <br />
+              Athletes
             </p>
           </div>
-
         </div>
       </div>
     </section>

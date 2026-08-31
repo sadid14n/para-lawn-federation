@@ -1,38 +1,61 @@
 @import "tailwindcss";
 
 :root {
+  --color-navy: #1E2265;
+  --color-navy-dark: #14173f;
+  --color-accent: #EF7D20;
+  --color-accent-dark: #d66a15;
+  --color-off-white: #F8F9FA;
+
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: var(--color-navy);
 }
 
 @theme inline {
+  --color-navy: var(--color-navy);
+  --color-navy-dark: var(--color-navy-dark);
+  --color-accent: var(--color-accent);
+  --color-accent-dark: var(--color-accent-dark);
+  --color-off-white: var(--color-off-white);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  scroll-behavior: smooth;
-}
+/* Removed: html { scroll-behavior: smooth; }
+   Lenis now owns all scroll smoothing — leaving the native CSS property in
+   place alongside a JS smooth-scroll library causes the two to fight over
+   scroll timing, which is a common source of jank/rubber-banding. */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  /* Ensures the footer stays at the bottom even on short pages */
-  min-height: 100vh; 
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* Lenis injects this class on <html> while a smooth scroll animation is
+   active (e.g. after clicking an anchor link) — this rule is required by
+   Lenis's own docs to prevent the page from being scrollable mid-animation
+   in a way that fights the library's own positioning. */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+html.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+html.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+html.lenis.lenis-stopped {
+  overflow: hidden;
+}
 
 @keyframes ticker {
   0% { transform: translateX(0); }
@@ -41,11 +64,9 @@ body {
 
 .animate-ticker {
   animation: ticker 30s linear infinite;
-  /* Add hardware acceleration for smoother scrolling */
-  will-change: transform; 
+  will-change: transform;
 }
 
-/* Pause the animation when the user hovers over it to read */
 .animate-ticker:hover {
   animation-play-state: paused;
 }

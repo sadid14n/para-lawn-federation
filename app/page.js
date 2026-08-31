@@ -10,6 +10,7 @@ import WhyUs from "./components/home/WhyUs";
 import MembersAndCTA from "./components/home/MembersAndCTA";
 import LatestNews from "./components/home/LatestNews";
 import Hero from "./components/home/Hero";
+import SportFeaturesShowcase from "./components/home/SportFeaturesShowcase";
 
 export default function Home() {
   return (
@@ -25,8 +26,12 @@ export default function Home() {
       {/* 3. EASY NAVIGATION: What are people looking for? */}
       <QuickLinks />
 
+      {/* <SportFeaturesShowcase /> */}
+
+
       {/* 4. THE SPORT EXPLAINED: How Para Bowls works (Adaptations, Classifications) */}
       <StackedFeatures />
+
 
       {/* 5. LEGITIMACY & SCALE: Show it's a real, growing organization */}
       <StatsSection />
