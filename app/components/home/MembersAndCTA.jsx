@@ -74,9 +74,9 @@ export default function MembersAndCTA() {
           <div className="flex w-max animate-ticker items-center group-hover:[animation-play-state:paused] transition-all">
             {marqueeLogos.map((logo, index) => (
               <div
-  key={index}
-  className="w-24 h-16 md:w-72 md:h-40 mx-1 md:mx-6 flex items-center justify-center p-2 md:p-8 cursor-pointer transition-transform duration-300 ease-out hover:scale-110"
->
+                key={index}
+                className="w-24 h-16 md:w-72 md:h-40 mx-1 md:mx-6 flex items-center justify-center p-2 md:p-8 cursor-pointer transition-transform duration-300 ease-out hover:scale-110"
+              >
                 <img
                   src={logo.img}
                   alt={logo.name}

@@ -2,11 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  FiGlobe,
-  FiCalendar,
-  FiUserCheck,
-} from "react-icons/fi";
+import { FiGlobe, FiCalendar, FiUserCheck } from "react-icons/fi";
 import { FaSquareFull } from "react-icons/fa6";
 
 const AnimatedCounter = ({ target, suffix = "+", duration = 2000 }) => {
@@ -75,20 +71,38 @@ export default function StatsSection() {
 
           <ul className="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8 font-medium">
             <li className="flex items-start">
-              <FaSquareFull className="text-accent mt-1.5 mr-4 flex-shrink-0" size={8} />
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
               <span>International Bowls for the Disabled (IBD)</span>
             </li>
             <li className="flex items-start">
-              <FaSquareFull className="text-accent mt-1.5 mr-4 flex-shrink-0" size={8} />
-              <span>Affiliated alongside the Bowling Federation of India (BFI)</span>
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
+              <span>
+                Affiliated alongside the Bowling Federation of India (BFI)
+              </span>
             </li>
             <li className="flex items-start">
-              <FaSquareFull className="text-accent mt-1.5 mr-4 flex-shrink-0" size={8} />
-              <span>Official Pathway for Para Asian Games & Commonwealth Games</span>
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
+              <span>
+                Official Pathway for Para Asian Games & Commonwealth Games
+              </span>
             </li>
             <li className="flex items-start">
-              <FaSquareFull className="text-accent mt-1.5 mr-4 flex-shrink-0" size={8} />
-              <span>Supported by State Para Sports Associations across India</span>
+              <FaSquareFull
+                className="text-accent mt-1.5 mr-4 flex-shrink-0"
+                size={8}
+              />
+              <span>
+                Supported by State Para Sports Associations across India
+              </span>
             </li>
           </ul>
 
@@ -108,55 +122,64 @@ export default function StatsSection() {
         </div>
 
         {/* ================= RIGHT COLUMN: ANIMATED STATS ================= */}
-<div className="w-full lg:w-[55%] grid grid-cols-3 place-items-center p-4 sm:p-6 md:p-10 gap-2 sm:gap-3 md:gap-4">
-  {/* Stat 1 */}
-  <div className={`${cardHoverStyles} aspect-square w-full`}>
-    <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
-      <FiGlobe className="block sm:hidden text-navy" size={16} />
-      <FiGlobe className="hidden sm:block md:hidden text-navy" size={22} />
-      <FiGlobe className="hidden md:block text-navy" size={32} />
-    </div>
-    <h3 className="font-[family-name:var(--font-display)] text-lg sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-1 md:mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
-      <AnimatedCounter target={15} />
-    </h3>
-    <p className="text-[7px] sm:text-[10px] md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide leading-tight">
-      <span className="block whitespace-nowrap">States</span>
-      <span className="block whitespace-nowrap">Represented</span>
-    </p>
-  </div>
+        <div className="w-full lg:w-[55%] grid grid-cols-3 place-items-center p-4 sm:p-6 md:p-10 gap-2 sm:gap-3 md:gap-4">
+          {/* Stat 1 */}
+          <div className={`${cardHoverStyles} aspect-square w-full`}>
+            <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
+              <FiGlobe className="block sm:hidden text-navy" size={16} />
+              <FiGlobe
+                className="hidden sm:block md:hidden text-navy"
+                size={22}
+              />
+              <FiGlobe className="hidden md:block text-navy" size={32} />
+            </div>
+            <h3 className="font-[family-name:var(--font-display)] text-lg sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-1 md:mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
+              <AnimatedCounter target={15} />
+            </h3>
+            <p className="text-[7px] sm:text-[10px] md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide leading-tight">
+              <span className="block whitespace-nowrap">States</span>
+              <span className="block whitespace-nowrap">Represented</span>
+            </p>
+          </div>
 
-  {/* Stat 2 */}
-  <div className={`${cardHoverStyles} aspect-square w-full`}>
-    <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
-      <FiCalendar className="block sm:hidden text-navy" size={16} />
-      <FiCalendar className="hidden sm:block md:hidden text-navy" size={22} />
-      <FiCalendar className="hidden md:block text-navy" size={32} />
-    </div>
-    <h3 className="font-[family-name:var(--font-display)] text-lg sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-1 md:mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
-      <AnimatedCounter target={10} />
-    </h3>
-    <p className="text-[7px] sm:text-[10px] md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide leading-tight">
-      <span className="block whitespace-nowrap">State & National</span>
-      <span className="block whitespace-nowrap">Events</span>
-    </p>
-  </div>
+          {/* Stat 2 */}
+          <div className={`${cardHoverStyles} aspect-square w-full`}>
+            <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
+              <FiCalendar className="block sm:hidden text-navy" size={16} />
+              <FiCalendar
+                className="hidden sm:block md:hidden text-navy"
+                size={22}
+              />
+              <FiCalendar className="hidden md:block text-navy" size={32} />
+            </div>
+            <h3 className="font-[family-name:var(--font-display)] text-lg sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-1 md:mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
+              <AnimatedCounter target={10} />
+            </h3>
+            <p className="text-[7px] sm:text-[10px] md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide leading-tight">
+              <span className="block whitespace-nowrap">State & National</span>
+              <span className="block whitespace-nowrap">Events</span>
+            </p>
+          </div>
 
-  {/* Stat 3 */}
-  <div className={`${cardHoverStyles} aspect-square w-full`}>
-    <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
-      <FiUserCheck className="block sm:hidden text-navy" size={16} />
-      <FiUserCheck className="hidden sm:block md:hidden text-navy" size={22} />
-      <FiUserCheck className="hidden md:block text-navy" size={32} />
-    </div>
-    <h3 className="font-[family-name:var(--font-display)] text-lg sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-1 md:mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
-      <AnimatedCounter target={500} />
-    </h3>
-    <p className="text-[7px] sm:text-[10px] md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide leading-tight">
-      <span className="block whitespace-nowrap">Registered</span>
-      <span className="block whitespace-nowrap">Athletes</span>
-    </p>
-  </div>
-</div>
+          {/* Stat 3 */}
+          <div className={`${cardHoverStyles} aspect-square w-full`}>
+            <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-6 shadow-lg group-hover:shadow-[0_0_25px_rgba(239,125,32,0.4)] group-hover:-translate-y-1 transition-all duration-500">
+              <FiUserCheck className="block sm:hidden text-navy" size={16} />
+              <FiUserCheck
+                className="hidden sm:block md:hidden text-navy"
+                size={22}
+              />
+              <FiUserCheck className="hidden md:block text-navy" size={32} />
+            </div>
+            <h3 className="font-[family-name:var(--font-display)] text-lg sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-white mb-1 md:mb-2 group-hover:scale-110 group-hover:text-accent transition-all duration-500">
+              <AnimatedCounter target={500} />
+            </h3>
+            <p className="text-[7px] sm:text-[10px] md:text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-500 uppercase tracking-wide leading-tight">
+              <span className="block whitespace-nowrap">Registered</span>
+              <span className="block whitespace-nowrap">Athletes</span>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
