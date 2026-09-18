@@ -70,7 +70,7 @@ export default function Header({ session }) {
         <nav className="hidden xl:flex items-center space-x-5 lg:space-x-7 text-sm font-bold text-navy uppercase tracking-wide">
           <Link href="/" className="text-accent">Home</Link>
           <Link href="/about" className="flex items-center hover:text-accent transition-colors">About PLBFI <FiChevronDown size={14} className="ml-1" /></Link>
-          <Link href="/results" className="hover:text-accent transition-colors">Results</Link>
+          <Link href="/gallery" className="hover:text-accent transition-colors">Gallery</Link>
           <Link href="/contact" className="hover:text-accent transition-colors">Contact</Link>
 
           <div className="flex items-center space-x-4 ml-2 border-l-2 border-gray-200 pl-6">
