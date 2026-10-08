@@ -63,7 +63,7 @@ export default function StackedFeatures() {
       linkText: 'Explore classifications',
       linkUrl: '#',
       images: [
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR99zPU1POpAuLjSz66Ny5d0ePulx_Vd9johyvkwiMLtA&s=10',
+        '/lawn3.jpeg',
         'https://media.gettyimages.com/id/1684026829/photo/players-competes-during-the-8th-senior-and-4th-u-25-national-lawn-bowls-championships-2023-at.jpg?s=612x612&w=0&k=20&c=bT_rVBwgGdVk7xGQgti_WC8d0jO_KwiqcrBFLIS4kkI='
       ]
     },
@@ -75,7 +75,7 @@ export default function StackedFeatures() {
       linkUrl: '#',
       images: [
         'https://media.gettyimages.com/id/1413249891/photo/leamington-spa-england-sunil-bahadur-navneet-singh-chandan-kumar-singh-and-dinesh-kumar-of.jpg?s=612x612&w=0&k=20&c=SrAIbdFyp7QopGAkrqMGUcv59Cg-4hKS56Xe3b7gE_w=',
-        'https://media.gettyimages.com/id/157168909/photo/ready-to-bowl-lawn-bowls.jpg?s=612x612&w=0&k=20&c=pGvwJFmX4xC1zl1tHNX30gtq0o5YULDJ-zcf_ooNeAg='
+        '/lawn4.jpeg'
       ]
     },
     {
@@ -85,8 +85,8 @@ export default function StackedFeatures() {
       linkText: 'Find upcoming events',
       linkUrl: '#',
       images: [
-        'https://media.gettyimages.com/id/853799052/photo/englands-ellen-falkner-sian-gordon-and-sophie-tolchard-kiss-their-gold-medals-after-winning.jpg?s=612x612&w=0&k=20&c=Pxu-o-b8XQtylFzFzmwA_5AE45ucl1VeYeNfxeUqsr0=',
-        'https://media.gettyimages.com/id/452614168/photo/glasgow-scotland-caroline-brown-of-scotland-competes-in-the-womans-singles-at-kelvingrove-lawn.jpg?s=612x612&w=0&k=20&c=pp8SZGUW_iAKdSUQvXIJHu6aocXZ9b9jWM-rvhCtR6Y='
+        '/lawn6.jpeg',
+        '/lawn7.jpeg'
       ]
     }
   ];
